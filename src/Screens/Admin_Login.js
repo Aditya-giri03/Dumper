@@ -12,27 +12,21 @@ import React, { useState } from "react";
 import tw from "twrnc";
 // import { ScrollView } from "react-native";
 
-const Login = (props) => {
-  const [vehicle, set_vehicle] = useState("");
-  const [phone, setPhone] = useState("");
+const Admin_Login = (props) => {
+  const [username, set_username] = useState("");
+  const [Password, set_pass] = useState("");
   const Submit = () => {
     // console.log("yes");
-    if (vehicle === "du" && phone === "123") {
-      props.user({ vehicle: "du-0002", phone: phone, type: "Dumper" });
+    if (username === "admin" && Password === "123") {
+      props.user({ id: username, type: "Admin" });
       Alert.alert("Verified Successfully");
-      // const obj = { vehicle: vehicle };
+      // const obj = { username: username };
       // props.navigation.navigate("Dashboard", obj);
-    } else if (vehicle === "sh" && phone === "578") {
-      props.user({
-        vehicle: "sh-0001",
-        phone: phone,
-        coords: { latitude: 27.0982614592758, longitude: 74.06279738455889 },
-        type: "Shovel",
-        assigned: { status: false, id: null },
-      });
+    } else if (username === "rohit" && Password === "123") {
+      props.user({ id: username, type: "Admin" });
       Alert.alert("Verified Successfully");
     } else {
-      Alert.alert("vehicle or phone Is in correct");
+      Alert.alert("Username or Password Is in correct");
     }
   };
 
@@ -50,29 +44,29 @@ const Login = (props) => {
           </View>
           <View style={tw`mb-4`}>
             <Text style={tw` text-gray-700 text-xl font-bold mb-2`}>
-              Vehicle Number{" "}
+              Username
             </Text>
             <TextInput
               style={tw`border rounded w-80 py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline`}
               autoCapitalize="none"
-              value={vehicle}
+              value={username}
               onChangeText={(input) => {
-                set_vehicle(input);
+                set_username(input);
               }}
             />
           </View>
           <View style={tw`relative mb-4`}>
             <Text style={tw`text-gray-700 text-xl font-bold mb-2`}>
-              Mobile Number
+              Password
             </Text>
             <TextInput
               style={tw`border rounded w-80 py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline `}
               autoCapitalize="none"
               autoCorrect={false}
-              secureTextEntry={false}
-              value={phone}
+              secureTextEntry={true}
+              value={Password}
               onChangeText={(input) => {
-                setPhone(input);
+                set_pass(input);
               }}
             />
           </View>
@@ -92,10 +86,10 @@ const Login = (props) => {
           </View>
           <TouchableOpacity
             onPress={() => {
-              props.navigation.navigate("Admin_Login");
+              props.navigation.navigate("Login");
             }}
           >
-            <Text style={tw`text-base text-blue-700`}>Sign-In as Admin </Text>
+            <Text style={tw`text-base text-blue-700`}>Sign-In as Operator</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -104,4 +98,4 @@ const Login = (props) => {
   );
 };
 
-export default Login;
+export default Admin_Login;

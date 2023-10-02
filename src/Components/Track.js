@@ -14,81 +14,40 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 // import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import tailwind from "twrnc";
 import { useRef } from "react";
-import LocationMarker from "../Components/LocationMarker";
+import LocationMarker from "./LocationMarker";
 
-const locations = [
-  {
-    vehicle: "sh-0001",
-    coords: {
-      latitude: 27.099699392611285,
-      longitude: 74.06328262321595,
-    },
-    type: "Shovel",
-    assigned: { status: true, id: "du-0002" },
-  },
-  {
-    vehicle: "du-0001",
-    coords: { latitude: 27.105895829893047, longitude: 74.06038085322578 },
-    type: "Dumper",
-    status: "full",
-    assigned: { status: false, id: null },
-  },
-  {
-    vehicle: "sh-0002",
-    coords: { latitude: 27.0982614592758, longitude: 74.06279738455889 },
-    type: "Shovel",
-    assigned: { status: false, id: null },
-  },
-  {
-    vehicle: "du-0002",
-    coords: { latitude: 27.0985398076631, longitude: 74.06160471901099 },
-    type: "Dumper",
-    status: "empty",
-    assigned: { status: true, id: "sh-0001" },
-  },
-  {
-    vehicle: "du-0003",
-    coords: { latitude: 27.0985398076631, longitude: 74.06160471901099 },
-    type: "Dumper",
-    status: "empty",
-    assigned: { status: false, id: null },
-  },
-  {
-    vehicle: "du-0004",
-    coords: { latitude: 27.105214222810172, longitude: 74.05873909826869 },
-    type: "Dumper",
-    status: "filling",
-    assigned: { status: false, id: null },
-  },
-];
-
-const Map = (props) => {
+const Track = (props) => {
+  // const shovel
+  //SAMPLE COORDINATES
   const coordinates = {
     coords: {
-      latitude: 27.099699392611285,
-      longitude: 74.06328262321595,
+      ...props.shovel.coords,
+      // latitude: 27.099699392611285,
+      // longitude: 74.06328262321595,
       //   latitude: 20.94915883708834,
       //   longitude: 85.1501868996023,
     },
   };
-  // console.log(props?.vehicle);
+  console.log(props.shovel);
   const mapRef = useRef(null);
   const [Loading, isLoading] = useState(true);
   const [location, setLocation] = useState(null);
   const [coords, setCoords] = useState([]);
   const [permission_satatus, setStatus] = useState(false);
+  // const [other_loc, setOtherLoc] = useState(null);
 
   const getPermission = async () => {
     // console.log(mapRef);
     let { status } = await Location.requestForegroundPermissionsAsync();
 
-    // console.log(status);
+    console.log(status);
     if (status !== "granted") {
       console.log("please grant location permissions");
       return;
     }
-    // let currentLocation = await Location.getCurrentPositionAsync({});
-    let currentLocation = coordinates;
+    // let currentLocation = await Location.getCurrentPositionAsync({});         // TO GET CURRENT POS
+
+    let currentLocation = coordinates; //MAKE SERVER CALL HERE TEMP DATA
 
     setLocation(currentLocation);
     setStatus((prev) => true);
@@ -100,7 +59,7 @@ const Map = (props) => {
     };
     mapRef.current.animateToRegion(loc, 1 * 1000);
     // isLoading(false);
-    // console.log("Loc :", currentLocation);
+    console.log("Loc :", currentLocation);
     return;
   };
 
@@ -122,7 +81,7 @@ const Map = (props) => {
     );
   } else {
     if (permission_satatus) {
-      // console.log(location.coords.latitude);
+      console.log(location.coords.latitude);
       return (
         <View style={styles.container}>
           <MapView
@@ -137,10 +96,8 @@ const Map = (props) => {
               longitudeDelta: 0.001,
             }}
           >
-            {locations.map((data, index) => (
-              <LocationMarker {...data} />
-            ))}
-
+            <LocationMarker {...props.shovel} />
+            <LocationMarker {...props.dumper} />
             {/* {coords.length > 0 && <Polyline coordinates={coords} />} */}
           </MapView>
           <TouchableOpacity
@@ -154,15 +111,15 @@ const Map = (props) => {
             />
           </TouchableOpacity>
           {/* <TouchableOpacity
-          onPress={getPath}
-          style={tailwind`absolute left-4 bottom-[20px] bg-white p-3 rounded-full`}
-        >
-          <MaterialCommunityIcons
-            name="crosshairs-gps"
-            size={30}
-            color="black"
-          />
-        </TouchableOpacity> */}
+            onPress={getPath}
+            style={tailwind`absolute left-4 bottom-[20px] bg-white p-3 rounded-full`}
+          >
+            <MaterialCommunityIcons
+              name="crosshairs-gps"
+              size={30}
+              color="black"
+            />
+          </TouchableOpacity> */}
         </View>
       );
     } else {
@@ -186,4 +143,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Map;
+export default Track;

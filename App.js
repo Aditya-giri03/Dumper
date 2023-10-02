@@ -2,10 +2,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity, StyleSheet, Text, View, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Login from "./src/Screens/Login";
-import Signup from "./src/Screens/Signup";
+import Admin_Login from "./src/Screens/Admin_Login";
 import Dashboard from "./src/Screens/Dashboard";
 import { useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -14,6 +14,7 @@ import tw from "twrnc";
 import Map from "./src/Screens/Map";
 import ShovelDashboard from "./src/Screens/Shovel/ShovelDashboard";
 import DumperDashboard from "./src/Screens/Dumper/DumperDashboard";
+import tailwind from "twrnc";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -24,13 +25,11 @@ export default function App() {
     setUser(null);
   };
 
-  if (user?.type == "Dumper") {
-    console.log("dumper");
+  if (user?.type == "Admin") {
     return (
       <SafeAreaView>
         <NavigationContainer>
           <View style={tw`w-full h-full flex flex-col`}>
-            {/* <View style={tw`h-90%`}> */}
             <Tab.Navigator
               screenOptions={{
                 tabBarActiveTintColor: "tomato",
@@ -61,16 +60,12 @@ export default function App() {
                 }}
               >
                 {(props) => (
-                  <DumperDashboard
-                    {...props}
-                    username={user}
-                    logout={signout}
-                  />
+                  <Dashboard {...props} userDetails={user} logout={signout} />
                 )}
               </Tab.Screen>
               <Tab.Screen
                 name="Map"
-                // component={Map}
+                component={Map}
                 options={{
                   tabBarLabel: "Map",
                   tabBarIcon: ({ focused }) => {
@@ -84,7 +79,7 @@ export default function App() {
                   },
                 }}
               >
-                {(props) => <Map {...props} vehicle={user?.vehicle} />}
+                {/* {(props) => <Map {...props} vehicle={user?.vehicle} />} */}
               </Tab.Screen>
             </Tab.Navigator>
           </View>
@@ -92,8 +87,8 @@ export default function App() {
         <StatusBar style="light" backgroundColor="rgba(0, 0, 0, 0.6)" />
       </SafeAreaView>
     );
-  } else if (user?.type == "Shovel") {
-    console.log(user, user.vehicle);
+  } else if (user?.type == "Shovel" || user?.type == "Dumper") {
+    console.log(user);
     return (
       <SafeAreaView>
         <NavigationContainer>
@@ -116,6 +111,36 @@ export default function App() {
                 name="Dashboard"
                 // component={ShovelDashboard}
                 options={{
+                  headerRight: () => (
+                    <View style={styles.but2}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          return Alert.alert(
+                            "Are your sure?",
+                            "Are you sure you want Logout?",
+                            [
+                              // The "Yes" button
+                              {
+                                text: "Yes",
+                                onPress: () => {
+                                  signout();
+                                },
+                              },
+                              // The "No" button
+                              // Does nothing but dismiss the dialog when tapped
+                              {
+                                text: "No",
+                              },
+                            ]
+                          );
+                        }}
+                      >
+                        <Text style={tailwind`text-center text-white`}>
+                          Logout
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  ),
                   tabBarLabel: "Dashboard",
                   tabBarIcon: ({ focused }) => {
                     return (
@@ -128,17 +153,25 @@ export default function App() {
                   },
                 }}
               >
-                {(props) => (
-                  <ShovelDashboard
-                    {...props}
-                    username={user}
-                    logout={signout}
-                  />
-                )}
+                {user?.type == "Shovel"
+                  ? (props) => (
+                      <ShovelDashboard
+                        {...props}
+                        userDetails={user}
+                        logout={signout}
+                      />
+                    )
+                  : (props) => (
+                      <DumperDashboard
+                        {...props}
+                        userDetails={user}
+                        logout={signout}
+                      />
+                    )}
               </Tab.Screen>
               <Tab.Screen
                 name="Map"
-                // component={Map}
+                component={Map}
                 options={{
                   tabBarLabel: "Map",
                   tabBarIcon: ({ focused }) => {
@@ -152,7 +185,7 @@ export default function App() {
                   },
                 }}
               >
-                {(props) => <Map {...props} vehicle={user?.vehicle} />}
+                {/* {(props) => <Map {...props} vehicle={user?.vehicle} />} */}
               </Tab.Screen>
             </Tab.Navigator>
           </View>
@@ -169,7 +202,9 @@ export default function App() {
           <Stack.Screen name="Login">
             {(props) => <Login {...props} user={setUser} />}
           </Stack.Screen>
-          <Stack.Screen name="Signup" component={Signup} />
+          <Stack.Screen name="Admin_Login">
+            {(props) => <Admin_Login {...props} user={setUser} />}
+          </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="light" backgroundColor="rgba(0, 0, 0, 0.6)" />
@@ -183,5 +218,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  but2: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 5,
+    color: "white",
+    width: 70,
+    height: 30,
+    margin: 10,
+    backgroundColor: "#4D59F5",
   },
 });
