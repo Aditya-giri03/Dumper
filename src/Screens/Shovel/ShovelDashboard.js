@@ -5,23 +5,26 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import SelectDropdown from "react-native-select-dropdown";
-import tw from "twrnc";
-import Track from "../../Components/Track";
-import tailwind from "twrnc";
+} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import SelectDropdown from 'react-native-select-dropdown';
+import tw from 'twrnc';
+import Track from '../../Components/Track';
+import tailwind from 'twrnc';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ShovelDashboard = (props) => {
-  const [assigned, setAssigned] = useState({ status: false, id: null });
   // console.log(props);
+  const [assigned, setAssigned] = useState({ status: false, id: null });
   const shovel_info = props.userDetails;
   const [dumper_info, setDumper] = useState({});
   const [Dumper_type, setType] = useState();
   const [Dumper_weight, setWeight] = useState();
+  const [voice, setVoice] = useState(false);
 
   useEffect(() => {
-    const assigned_status = { status: false, id: "du-0002" };
+    const assigned_status = { status: false, id: 'du-0002' };
     if (assigned_status) {
       setAssigned((prev) => ({ ...assigned_status }));
     }
@@ -30,11 +33,12 @@ const ShovelDashboard = (props) => {
   const request = () => {
     console.log(shovel_info, Dumper_type, Dumper_weight);
     const dumper = {
-      vehicle: "du-0002",
+      vehicle: 'du-0002',
+      phone: 9911324252,
       coords: { latitude: 27.0985398076631, longitude: 74.06160471901099 },
-      type: "Dumper",
-      status: "empty",
-      assigned: { status: true, id: "sh-0001" },
+      type: 'Dumper',
+      status: 'empty',
+      assigned: { status: true, id: 'sh-0001' },
     };
     if (dumper) {
       console.log(assigned);
@@ -45,15 +49,15 @@ const ShovelDashboard = (props) => {
   };
 
   const materialtype = [
-    "Rear Discharge",
-    "Rear end tractor trailer",
-    "Side Discharge",
-    "Bottom Discharge",
-    "Underground Dump Trucks",
-    "Articulated Dump Trucks",
-    "Rigid Rear Dump Truck",
+    'Rear Discharge',
+    'Rear end tractor trailer',
+    'Side Discharge',
+    'Bottom Discharge',
+    'Underground Dump Trucks',
+    'Articulated Dump Trucks',
+    'Rigid Rear Dump Truck',
   ];
-  const weight = ["Heavy", "Medium", "Light"];
+  const weight = ['Heavy', 'Medium', 'Light'];
 
   return (
     <View style={styles.container}>
@@ -124,7 +128,7 @@ const ShovelDashboard = (props) => {
         </View>
       ) : (
         <View style={tailwind`h-full w-full items-center`}>
-          <View style={tailwind`h-[80%] w-[98%]`}>
+          <View style={tailwind`h-[70%] w-[98%]`}>
             <Track
               shovel={shovel_info}
               dumper={dumper_info}
@@ -132,30 +136,73 @@ const ShovelDashboard = (props) => {
             />
           </View>
           <View>
-            <TouchableOpacity
-              onPress={() => {
-                return Alert.alert(
-                  "Are your sure?",
-                  "Are you sure you want to Make new Request?",
-                  [
-                    // The "Yes" button
-                    {
-                      text: "Yes",
-                      onPress: () => {
-                        setAssigned({ status: false, id: null });
+            <View style={styles.wrapper}>
+              <View style={styles.driverInfoContainer}>
+                {/* dumper no, phone no,voice channel */}
+                <View>
+                  <View style={styles.dumperDetailsBox}>
+                    <MaterialCommunityIcons
+                      name="dump-truck"
+                      size={25}
+                      color="grey"
+                    />
+                    <Text style={styles.dumperDetails}>{assigned.id}</Text>
+                  </View>
+                  <View style={styles.dumperDetailsBox}>
+                    <MaterialCommunityIcons
+                      name="phone"
+                      size={25}
+                      color="grey"
+                    />
+                    <Text style={styles.dumperDetails}>
+                      {dumper_info.phone}
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.talkContainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.talkButton,
+                      { backgroundColor: voice ? 'green' : 'red' },
+                    ]}
+                    onPress={() => {
+                      setVoice((prev) => !prev);
+                    }}
+                  >
+                    {voice ? (
+                      <Ionicons name="mic-sharp" color="white" size={30} />
+                    ) : (
+                      <Ionicons name="mic-off-sharp" color="white" size={30} />
+                    )}
+                  </TouchableOpacity>
+                  <Text>{voice ? 'mic on' : 'mic off'}</Text>
+                </View>
+              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  return Alert.alert(
+                    'Are your sure?',
+                    'Are you sure you want to Make new Request?',
+                    [
+                      // The "Yes" button
+                      {
+                        text: 'Yes',
+                        onPress: () => {
+                          setAssigned({ status: false, id: null });
+                        },
                       },
-                    },
-                    // The "No" button
-                    // Does nothing but dismiss the dialog when tapped
-                    {
-                      text: "No",
-                    },
-                  ]
-                );
-              }}
-            >
-              <Text style={styles.but1}>New Request</Text>
-            </TouchableOpacity>
+                      // The "No" button
+                      // Does nothing but dismiss the dialog when tapped
+                      {
+                        text: 'No',
+                      },
+                    ]
+                  );
+                }}
+              >
+                <Text style={styles.but1}>New Request</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           {/* <View>
             <TouchableOpacity
@@ -173,37 +220,90 @@ const ShovelDashboard = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: { textAlign: "center" },
+  container: { textAlign: 'center' },
   but1: {
-    alignItems: "center",
-    textAlign: "center",
+    alignItems: 'center',
+    textAlign: 'center',
     padding: 10,
     borderRadius: 5,
     width: 200,
     marginBottom: 10,
-    color: "white",
+    color: 'white',
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     elevation: 5,
-    backgroundColor: "red",
+    backgroundColor: 'red',
   },
 
   dropdown1: {
-    position: "absolute",
-    backgroundColor: "#fff",
-    width: "100%",
-    shadowColor: "#000000",
+    position: 'absolute',
+    backgroundColor: '#fff',
+    width: '100%',
+    shadowColor: '#000000',
     shadowRadius: 4,
     shadowOffset: { height: 4, width: 0 },
     shadowOpacity: 0.5,
   },
   dropdown2: {
     borderWidth: 1,
-    borderColor: "gray",
+    borderColor: 'gray',
     borderRadius: 5,
     padding: 10,
     marginTop: 5,
-    backgroundColor: "white",
+    backgroundColor: 'white',
+  },
+  wrapper: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 6,
+    // backgroundColor: 'red',
+  },
+  driverInfoContainer: {
+    // backgroundColor: 'red',
+    padding: 15,
+    marginBottom: 10,
+    width: '85%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 5,
+    // justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5.84,
+    elevation: 5,
+  },
+  dumperDetailsBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dumperDetails: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#000',
+    marginVertical: 12 / 1.5,
+    marginLeft: 8,
+    backgroundColor: 'white',
+  },
+  talkContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  talkButton: {
+    borderRadius: 100,
+    height: 50,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 5,
   },
 });
 
