@@ -18,7 +18,16 @@ const Login = (props) => {
   const Submit = () => {
     // console.log("yes");
     if (vehicle === "du" && phone === "123") {
-      props.user({ vehicle: "du-0002", phone: phone, type: "Dumper" });
+      props.user({
+        vehicle: "du-0002",
+        phone: phone,
+        type: "Dumper",
+        coords: { latitude: 27.0985398076631, longitude: 74.06160471901099 },
+        assigned: { status: true, id: "sh-0001" },
+        dumper_type: "Rear Discharge",
+        dumper_weight: "Heavy",
+        status: "empty",
+      });
       Alert.alert("Verified Successfully");
       // const obj = { vehicle: vehicle };
       // props.navigation.navigate("Dashboard", obj);

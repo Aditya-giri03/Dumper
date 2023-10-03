@@ -6,22 +6,22 @@ import {
   Button,
   ActivityIndicator,
   Image,
-} from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
-import React, { useEffect, useState } from 'react';
-import * as Location from 'expo-location';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+} from "react-native";
+import MapView, { Marker, PROVIDER_GOOGLE, Polyline } from "react-native-maps";
+import React, { useEffect, useState } from "react";
+import * as Location from "expo-location";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import tailwind from 'twrnc';
-import { useRef } from 'react';
-import LocationMarker from './LocationMarker';
+import tailwind from "twrnc";
+import { useRef } from "react";
+import LocationMarker from "./LocationMarker";
 
 const Track = (props) => {
   // const shovel
   //SAMPLE COORDINATES
   const coordinates = {
     coords: {
-      ...props.shovel.coords,
+      ...props.source.coords,
       // latitude: 27.099699392611285,
       // longitude: 74.06328262321595,
       //   latitude: 20.94915883708834,
@@ -31,7 +31,9 @@ const Track = (props) => {
   console.log(props.shovel);
   const mapRef = useRef(null);
   const [Loading, isLoading] = useState(true);
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState({
+    coords: { ...props.destination.coords },
+  });
   const [coords, setCoords] = useState([]);
   const [permission_satatus, setStatus] = useState(false);
   // const [other_loc, setOtherLoc] = useState(null);
@@ -41,8 +43,8 @@ const Track = (props) => {
     let { status } = await Location.requestForegroundPermissionsAsync();
 
     console.log(status);
-    if (status !== 'granted') {
-      console.log('please grant location permissions');
+    if (status !== "granted") {
+      console.log("please grant location permissions");
       return;
     }
     // let currentLocation = await Location.getCurrentPositionAsync({});         // TO GET CURRENT POS
@@ -59,7 +61,7 @@ const Track = (props) => {
     };
     mapRef.current.animateToRegion(loc, 1 * 1000);
     // isLoading(false);
-    console.log('Loc :', currentLocation);
+    console.log("Loc :", currentLocation);
     return;
   };
 
@@ -68,18 +70,18 @@ const Track = (props) => {
       isLoading(true);
       await getPermission()
         .then(() => isLoading(false))
-        .catch(console.log('error in getting permissions'), isLoading(false));
+        .catch(console.log("error in getting permissions"), isLoading(false));
     };
     func();
   }, []);
 
   const start = {
-    ...props.shovel.coords,
+    ...props.source.coords,
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   };
   const end = {
-    ...props.dumper.coords,
+    ...props.destination.coords,
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   };
@@ -109,12 +111,12 @@ const Track = (props) => {
           >
             <Polyline
               coordinates={[start, end]} //specify our coordinates
-              strokeColor={'#fff'}
+              strokeColor={"#fff"}
               strokeWidth={3}
               lineDashPattern={[1]}
             />
-            <LocationMarker {...props.shovel} />
-            <LocationMarker {...props.dumper} />
+            <LocationMarker {...props.source} />
+            <LocationMarker {...props.destination} />
             {/* {coords.length > 0 && <Polyline coordinates={coords} />} */}
           </MapView>
           <TouchableOpacity
@@ -151,12 +153,12 @@ const Track = (props) => {
 };
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
-    width: '100%',
+    height: "100%",
+    width: "100%",
   },
   map: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
 });
 
