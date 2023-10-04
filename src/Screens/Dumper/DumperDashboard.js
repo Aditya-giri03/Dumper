@@ -15,7 +15,7 @@ import Track from "../../Components/Track";
 
 const DumperDashboard = (props) => {
   const [assigned, setAssigned] = useState({ status: false, id: null });
-  const [loadPercentage, setLoadPercentage] = useState(30);
+  const [loadPercentage, setLoadPercentage] = useState(40);
   const [status, setStatus] = useState("full");
   const [shovel_info, setShovel] = useState();
   const [voice, setVoice] = useState(false);
