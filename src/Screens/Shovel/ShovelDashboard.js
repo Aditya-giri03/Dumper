@@ -13,6 +13,7 @@ import Track from "../../Components/Track";
 import tailwind from "twrnc";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Audio from "./Audio/Audio";
 
 const ShovelDashboard = (props) => {
   // console.log(props);
@@ -61,6 +62,7 @@ const ShovelDashboard = (props) => {
 
   return (
     <View style={styles.container}>
+      <Audio></Audio>
       {!assigned.status ? (
         <View
           style={tw`w-full h-full justify-center items-center bg-slate-300`}
@@ -74,6 +76,11 @@ const ShovelDashboard = (props) => {
               </Text>
               <SelectDropdown
                 style={styles.dropdown1}
+                buttonStyle={styles.dropdown1BtnStyle}
+                buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                rowTextStyle={styles.dropdown1RowTxtStyle}
+                dropdownStyle={styles.dropdown1DropdownStyle}
+                rowStyle={styles.dropdown1RowStyle}
                 data={materialtype}
                 onSelect={(selectedItem, index) => {
                   setType(selectedItem);
@@ -93,6 +100,10 @@ const ShovelDashboard = (props) => {
               </Text>
               <SelectDropdown
                 style={styles.dropdown2}
+                buttonStyle={styles.dropdown1BtnStyle}
+                dropdownStyle={styles.dropdown2DropdownStyle}
+                buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                rowTextStyle={styles.dropdown1RowTxtStyle}
                 data={weight}
                 onSelect={(selectedItem, index) => {
                   setWeight(selectedItem);
@@ -235,23 +246,32 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
   },
 
-  dropdown1: {
-    position: "absolute",
-    backgroundColor: "#fff",
-    width: "100%",
-    shadowColor: "#000000",
-    shadowRadius: 4,
-    shadowOffset: { height: 4, width: 0 },
-    shadowOpacity: 0.5,
-  },
-  dropdown2: {
+  dropdown1BtnStyle: {
+    width: "70%",
+    height: 40,
+    backgroundColor: "#f5d271",
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 5,
-    padding: 10,
-    marginTop: 5,
-    backgroundColor: "white",
+    borderColor: "#444",
   },
+
+  dropdown1DropdownStyle: {
+    backgroundColor: "#f5d271",
+    width: 220,
+    borderRadius: 7,
+  },
+  dropdown2DropdownStyle: {
+    backgroundColor: "#f5d271",
+    // width: 220,
+    borderRadius: 7,
+  },
+  dropdown1BtnTxtStyle: { color: "#444", fontSize: 15, textAlign: "left" },
+  dropdown1RowTxtStyle: { color: "#444", fontSize: 15, textAlign: "left" },
+  dropdown1RowStyle: {
+    width: 220,
+    borderBottomColor: "#C5C5C5",
+  },
+
   wrapper: {
     flexDirection: "column",
     justifyContent: "center",
