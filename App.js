@@ -6,15 +6,18 @@ import { TouchableOpacity, StyleSheet, Text, View, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Login from "./src/Screens/Login";
 import Admin_Login from "./src/Screens/Admin_Login";
-import Dashboard from "./src/Screens/Dashboard";
+import Dashboard from "./src/Screens/Admin/Dashboard";
 import { useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import tw from "twrnc";
 import Map from "./src/Screens/Map";
 import ShovelDashboard from "./src/Screens/Shovel/ShovelDashboard";
 import DumperDashboard from "./src/Screens/Dumper/DumperDashboard";
 import tailwind from "twrnc";
+import Worker from "./src/Screens/Admin/Worker";
+import Vehicle from "./src/Screens/Admin/Vehicle";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -63,6 +66,40 @@ export default function App() {
                   <Dashboard {...props} userDetails={user} logout={signout} />
                 )}
               </Tab.Screen>
+
+              <Tab.Screen
+                name="Workers"
+                component={Worker}
+                options={{
+                  tabBarLabel: "workers",
+                  tabBarIcon: ({ focused }) => {
+                    return (
+                      <MaterialIcons
+                        name="engineering"
+                        size={30}
+                        color={focused ? "tomato" : "gray"}
+                      />
+                    );
+                  },
+                }}
+              />
+              <Tab.Screen
+                name="Vehicle"
+                component={Vehicle}
+                options={{
+                  tabBarLabel: "Vehicle",
+                  tabBarIcon: ({ focused }) => {
+                    return (
+                      <MaterialCommunityIcons
+                        name="dump-truck"
+                        size={30}
+                        color={focused ? "tomato" : "gray"}
+                      />
+                    );
+                  },
+                }}
+              />
+
               <Tab.Screen
                 name="Map"
                 component={Map}
