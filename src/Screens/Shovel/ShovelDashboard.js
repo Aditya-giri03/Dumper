@@ -13,7 +13,7 @@ import Track from "../../Components/Track";
 import tailwind from "twrnc";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Audio from "./Audio/Audio";
+// import Audio from "./Audio/Audio";
 
 const ShovelDashboard = (props) => {
   // console.log(props);
@@ -62,7 +62,7 @@ const ShovelDashboard = (props) => {
 
   return (
     <View style={styles.container}>
-      <Audio></Audio>
+      {/* <Audio></Audio> */}
       {!assigned.status ? (
         <View
           style={tw`w-full h-full justify-center items-center bg-slate-300`}
