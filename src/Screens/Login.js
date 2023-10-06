@@ -49,7 +49,7 @@ const Login = (props) => {
     <SafeAreaView style={{ flex: 1 }}>
       {/* <ScsrollView> */}
       <View style={tw`flex-1 flex-col bg-white items-center  relative`}>
-        <View>
+        <View style={tw`items-center`}>
           <View style={tw`flex items-center h-60 w-80 p-2`}>
             <Image
               style={tw`w-full h-full `}
@@ -75,7 +75,7 @@ const Login = (props) => {
               Mobile Number
             </Text>
             <TextInput
-              style={tw`border rounded w-80 py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline `}
+              style={tw`border rounded w-80 py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline `}
               autoCapitalize="none"
               autoCorrect={false}
               secureTextEntry={false}

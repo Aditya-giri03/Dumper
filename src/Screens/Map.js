@@ -6,58 +6,58 @@ import {
   Button,
   ActivityIndicator,
   Image,
-} from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import React, { useEffect, useState } from 'react';
-import * as Location from 'expo-location';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+} from "react-native";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import React, { useEffect, useState } from "react";
+import * as Location from "expo-location";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import tailwind from 'twrnc';
-import { useRef } from 'react';
-import LocationMarker from '../Components/LocationMarker';
+import tailwind from "twrnc";
+import { useRef } from "react";
+import LocationMarker from "../Components/LocationMarker";
 
 const locations = [
   {
-    vehicle: 'sh-0001',
+    vehicle: "sh-0001",
     coords: {
       latitude: 27.099699392611285,
       longitude: 74.06328262321595,
     },
-    type: 'Shovel',
-    assigned: { status: true, id: 'du-0002' },
+    type: "Shovel",
+    assigned: { status: true, id: "du-0002" },
   },
   {
-    vehicle: 'du-0001',
+    vehicle: "du-0001",
     coords: { latitude: 27.105895829893047, longitude: 74.06038085322578 },
-    type: 'Dumper',
-    status: 'full',
+    type: "Dumper",
+    status: "full",
     assigned: { status: false, id: null },
   },
   {
-    vehicle: 'sh-0002',
+    vehicle: "sh-0002",
     coords: { latitude: 27.0982614592758, longitude: 74.06279738455889 },
-    type: 'Shovel',
+    type: "Shovel",
     assigned: { status: false, id: null },
   },
   {
-    vehicle: 'du-0002',
+    vehicle: "du-0002",
     coords: { latitude: 27.0985398076631, longitude: 74.06160471901099 },
-    type: 'Dumper',
-    status: 'empty',
-    assigned: { status: true, id: 'sh-0001' },
+    type: "Dumper",
+    status: "empty",
+    assigned: { status: true, id: "sh-0001" },
   },
   {
-    vehicle: 'du-0003',
+    vehicle: "du-0003",
     coords: { latitude: 27.0985398076631, longitude: 74.06160471901099 },
-    type: 'Dumper',
-    status: 'empty',
+    type: "Dumper",
+    status: "empty",
     assigned: { status: false, id: null },
   },
   {
-    vehicle: 'du-0004',
+    vehicle: "du-0004",
     coords: { latitude: 27.105214222810172, longitude: 74.05873909826869 },
-    type: 'Dumper',
-    status: 'filling',
+    type: "Dumper",
+    status: "filling",
     assigned: { status: false, id: null },
   },
 ];
@@ -83,8 +83,8 @@ const Map = (props) => {
     let { status } = await Location.requestForegroundPermissionsAsync();
 
     // console.log(status);
-    if (status !== 'granted') {
-      console.log('please grant location permissions');
+    if (status !== "granted") {
+      console.log("please grant location permissions");
       return;
     }
     // let currentLocation = await Location.getCurrentPositionAsync({});
@@ -109,7 +109,7 @@ const Map = (props) => {
       isLoading(true);
       await getPermission()
         .then(() => isLoading(false))
-        .catch(console.log('error in getting permissions'), isLoading(false));
+        .catch(console.log("error in getting permissions"), isLoading(false));
     };
     func();
   }, []);
@@ -177,12 +177,12 @@ const Map = (props) => {
 };
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
-    width: '100%',
+    height: "100%",
+    width: "100%",
   },
   map: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
 });
 

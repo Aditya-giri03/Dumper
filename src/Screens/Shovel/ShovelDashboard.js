@@ -11,8 +11,11 @@ import SelectDropdown from "react-native-select-dropdown";
 import tw from "twrnc";
 import Track from "../../Components/Track";
 import tailwind from "twrnc";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {
+  Ionicons,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from "react-native-vector-icons";
 // import Audio from "./Audio/Audio";
 
 const ShovelDashboard = (props) => {
@@ -60,82 +63,129 @@ const ShovelDashboard = (props) => {
   ];
   const weight = ["Heavy", "Medium", "Light"];
 
+  const item = {
+    workerId: "125",
+    workerName: "Himanshu yadav",
+    workerExp: 6,
+    workerPhone: "7684930356",
+  };
+
+  const printRating = (exp) => {
+    let rating = [];
+    for (let i = 0; i < Math.min(exp / 2, 5); i++) {
+      // full star
+      rating.push(
+        <MaterialCommunityIcons name="star" size={20} color="#0E629A" />
+      );
+    }
+    if (exp < 10 && exp % 2 != 0) {
+      // half star
+      rating.push(
+        <MaterialCommunityIcons name="star-half" size={20} color="#0E629A" />
+      );
+    }
+    return rating;
+  };
+
   return (
     <View style={styles.container}>
       {/* <Audio></Audio> */}
       {!assigned.status ? (
-        <View
-          style={tw`w-full h-full justify-center items-center bg-slate-300`}
-        >
+        <View style={tailwind`flex-1 m-4`}>
           <View
-            style={tw`w-65 h-54 justify-center items-center bg-slate-400 rounded-3xl`}
+            style={tailwind`flex flex-col w-full bg-white shadow-xl rounded-xl`}
           >
-            <View>
-              <Text style={tw`text-black font-bold text-xl text-center my-2`}>
-                Select Material Type
+            <View
+              style={tailwind`flex flex-row justify-between items-center px-2 py-2 bg-[#ACF35C] rounded-t-xl`}
+            >
+              <Text style={tailwind`text-xl font-bold text-black ml-2`}>
+                Worker ID: {item.workerId}
+                {console.log(item.workerId)}
               </Text>
-              <SelectDropdown
-                style={styles.dropdown1}
-                buttonStyle={styles.dropdown1BtnStyle}
-                buttonTextStyle={styles.dropdown1BtnTxtStyle}
-                rowTextStyle={styles.dropdown1RowTxtStyle}
-                dropdownStyle={styles.dropdown1DropdownStyle}
-                rowStyle={styles.dropdown1RowStyle}
-                data={materialtype}
-                onSelect={(selectedItem, index) => {
-                  setType(selectedItem);
-                  console.log(selectedItem, index);
-                }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  return selectedItem;
-                }}
-                rowTextForSelection={(item, index) => {
-                  return item;
-                }}
-              />
+              <View style={tailwind`flex flex-row`}>
+                {printRating(item.workerExp)}
+              </View>
             </View>
-            <View>
-              <Text style={tw`text-black font-bold text-xl text-center my-2`}>
-                Weight of Load
-              </Text>
-              <SelectDropdown
-                style={styles.dropdown2}
-                buttonStyle={styles.dropdown1BtnStyle}
-                dropdownStyle={styles.dropdown2DropdownStyle}
-                buttonTextStyle={styles.dropdown1BtnTxtStyle}
-                rowTextStyle={styles.dropdown1RowTxtStyle}
-                data={weight}
-                onSelect={(selectedItem, index) => {
-                  setWeight(selectedItem);
-                  console.log(selectedItem, index);
+            <View
+              style={tailwind`px-3 py-3 w-full flex flex-col justify-between  `}
+            >
+              <View style={tailwind`pb-4 flex flex-col `}>
+                <View style={tailwind` flex flex-row mb-2`}>
+                  <MaterialIcons name="engineering" size={30} color="#3CA0E3" />
+                  <Text style={tailwind`pl-2 font-semibold text-lg text-black`}>
+                    : {item.workerName}
+                  </Text>
+                </View>
+                <View style={tailwind` flex flex-row mb-2`}>
+                  <MaterialCommunityIcons
+                    name="phone"
+                    size={30}
+                    color="#3CA0E3"
+                  />
+                  <Text style={tailwind`pl-2 font-semibold text-lg text-black`}>
+                    : {item.workerPhone}
+                  </Text>
+                </View>
+              </View>
+              <View style={tailwind`w-full h-[2px] bg-[#70B7E6] my-2`}></View>
+              <View style={tw`flex flex-col justify-center items-center `}>
+                <Text style={tw`text-black font-bold text-xl text-center my-2`}>
+                  Select Material Type
+                </Text>
+                <SelectDropdown
+                  style={styles.dropdown1}
+                  buttonStyle={styles.dropdown1BtnStyle}
+                  buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                  rowTextStyle={styles.dropdown1RowTxtStyle}
+                  dropdownStyle={styles.dropdown1DropdownStyle}
+                  rowStyle={styles.dropdown1RowStyle}
+                  data={materialtype}
+                  onSelect={(selectedItem, index) => {
+                    setType(selectedItem);
+                    console.log(selectedItem, index);
+                  }}
+                  buttonTextAfterSelection={(selectedItem, index) => {
+                    return selectedItem;
+                  }}
+                  rowTextForSelection={(item, index) => {
+                    return item;
+                  }}
+                />
+              </View>
+              <View style={tw`flex flex-col justify-center items-center my-4`}>
+                <Text style={tw`text-black font-bold text-xl text-center my-2`}>
+                  Weight of Load
+                </Text>
+                <SelectDropdown
+                  style={styles.dropdown2}
+                  buttonStyle={styles.dropdown1BtnStyle}
+                  dropdownStyle={styles.dropdown2DropdownStyle}
+                  buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                  rowTextStyle={styles.dropdown1RowTxtStyle}
+                  data={weight}
+                  onSelect={(selectedItem, index) => {
+                    setWeight(selectedItem);
+                    console.log(selectedItem, index);
+                  }}
+                  buttonTextAfterSelection={(selectedItem, index) => {
+                    return selectedItem;
+                  }}
+                  rowTextForSelection={(item, index) => {
+                    return item;
+                  }}
+                />
+              </View>
+            </View>
+            <View style={tw`flex flex-col justify-center items-center mb-2`}>
+              <TouchableOpacity
+                onPress={() => {
+                  request();
                 }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  return selectedItem;
-                }}
-                rowTextForSelection={(item, index) => {
-                  return item;
-                }}
-              />
+              >
+                <Text style={styles.but1}>Request Dumper</Text>
+              </TouchableOpacity>
             </View>
           </View>
-          <View>
-            <TouchableOpacity
-              onPress={() => {
-                request();
-              }}
-            >
-              <Text style={styles.but1}>Request Dumper</Text>
-            </TouchableOpacity>
-          </View>
-          {/* <View>
-            <TouchableOpacity
-              onPress={() => {
-                props.logout();
-              }}
-            >
-              <Text style={styles.but2}>Logout</Text>
-            </TouchableOpacity>
-          </View> */}
         </View>
       ) : (
         <View style={tailwind`h-full w-full items-center`}>
@@ -231,7 +281,7 @@ const ShovelDashboard = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: { textAlign: "center" },
+  container: { flex: 1 },
   but1: {
     alignItems: "center",
     textAlign: "center",
@@ -280,14 +330,12 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
   },
   driverInfoContainer: {
-    // backgroundColor: 'red',
     padding: 15,
     marginBottom: 10,
     width: "85%",
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 5,
-    // justifyContent: 'flex-start',
     alignItems: "center",
     backgroundColor: "#fff",
     borderRadius: 5,

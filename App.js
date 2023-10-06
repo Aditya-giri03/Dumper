@@ -2,22 +2,27 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import { TouchableOpacity, StyleSheet, Text, View, Alert } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Login from "./src/Screens/Login";
 import Admin_Login from "./src/Screens/Admin_Login";
 import Dashboard from "./src/Screens/Admin/Dashboard";
 import { useState } from "react";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {
+  Ionicons,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from "react-native-vector-icons";
+
 import tw from "twrnc";
+import { ToastProvider } from "react-native-toast-notifications";
 import Map from "./src/Screens/Map";
 import ShovelDashboard from "./src/Screens/Shovel/ShovelDashboard";
 import DumperDashboard from "./src/Screens/Dumper/DumperDashboard";
-import tailwind from "twrnc";
+
 import Worker from "./src/Screens/Admin/Worker";
 import Vehicle from "./src/Screens/Admin/Vehicle";
+import Logout from "./src/Screens/Logout";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -30,222 +35,201 @@ export default function App() {
 
   if (user?.type == "Admin") {
     return (
-      <SafeAreaView>
-        <NavigationContainer>
-          <View style={tw`w-full h-full flex flex-col`}>
-            <Tab.Navigator
-              screenOptions={{
-                tabBarActiveTintColor: "tomato",
-                tabBarInactiveTintColor: "gray",
-                tabBarLabelStyle: { fontSize: 15, paddingBottom: 6 },
-                tabBarStyle: {
-                  height: 70,
-                  position: "fixed",
-                  bottom: 0,
-                },
-              }}
-              initialRouteName="Dashboard"
-            >
-              <Tab.Screen
-                name="Dashboard"
-                // component={Dashboard}
-                options={{
-                  tabBarLabel: "Dashboard",
-                  tabBarIcon: ({ focused }) => {
-                    return (
-                      <Ionicons
-                        name={focused ? "home" : "home-outline"}
-                        size={30}
-                        color={focused ? "tomato" : "gray"}
-                      />
-                    );
+      <ToastProvider offsetBottom={130} successColor="green">
+        <SafeAreaView>
+          <NavigationContainer>
+            <View style={tw`w-full h-full flex flex-col`}>
+              <Tab.Navigator
+                backBehavior={"history"}
+                screenOptions={{
+                  tabBarActiveTintColor: "tomato",
+                  tabBarInactiveTintColor: "gray",
+                  tabBarLabelStyle: { fontSize: 15, paddingBottom: 6 },
+                  tabBarStyle: {
+                    height: 70,
+                    position: "fixed",
+                    bottom: 0,
                   },
                 }}
+                initialRouteName="Dashboard"
               >
-                {(props) => (
-                  <Dashboard {...props} userDetails={user} logout={signout} />
-                )}
-              </Tab.Screen>
+                <Tab.Screen
+                  name="Dashboard"
+                  // component={Dashboard}
+                  options={{
+                    headerRight: () => <Logout logout={signout} />,
+                    tabBarLabel: "Dashboard",
+                    tabBarIcon: ({ focused }) => {
+                      return (
+                        <Ionicons
+                          name={focused ? "home" : "home-outline"}
+                          size={30}
+                          color={focused ? "tomato" : "gray"}
+                        />
+                      );
+                    },
+                  }}
+                >
+                  {(props) => (
+                    <Dashboard {...props} userDetails={user} logout={signout} />
+                  )}
+                </Tab.Screen>
 
-              <Tab.Screen
-                name="Workers"
-                component={Worker}
-                options={{
-                  tabBarLabel: "workers",
-                  tabBarIcon: ({ focused }) => {
-                    return (
-                      <MaterialIcons
-                        name="engineering"
-                        size={30}
-                        color={focused ? "tomato" : "gray"}
-                      />
-                    );
-                  },
-                }}
-              />
-              <Tab.Screen
-                name="Vehicle"
-                component={Vehicle}
-                options={{
-                  tabBarLabel: "Vehicle",
-                  tabBarIcon: ({ focused }) => {
-                    return (
-                      <MaterialCommunityIcons
-                        name="dump-truck"
-                        size={30}
-                        color={focused ? "tomato" : "gray"}
-                      />
-                    );
-                  },
-                }}
-              />
+                <Tab.Screen
+                  name="Workers"
+                  component={Worker}
+                  options={{
+                    tabBarLabel: "workers",
+                    tabBarIcon: ({ focused }) => {
+                      return (
+                        <MaterialIcons
+                          name="engineering"
+                          size={30}
+                          color={focused ? "tomato" : "gray"}
+                        />
+                      );
+                    },
+                  }}
+                />
+                <Tab.Screen
+                  name="Vehicle"
+                  component={Vehicle}
+                  options={{
+                    tabBarLabel: "Vehicle",
+                    tabBarIcon: ({ focused }) => {
+                      return (
+                        <MaterialCommunityIcons
+                          name="dump-truck"
+                          size={30}
+                          color={focused ? "tomato" : "gray"}
+                        />
+                      );
+                    },
+                  }}
+                />
 
-              <Tab.Screen
-                name="Map"
-                component={Map}
-                options={{
-                  tabBarLabel: "Map",
-                  tabBarIcon: ({ focused }) => {
-                    return (
-                      <Ionicons
-                        name={focused ? "map" : "map-outline"}
-                        size={30}
-                        color={focused ? "tomato" : "gray"}
-                      />
-                    );
-                  },
-                }}
-              >
-                {/* {(props) => <Map {...props} vehicle={user?.vehicle} />} */}
-              </Tab.Screen>
-            </Tab.Navigator>
-          </View>
-        </NavigationContainer>
-        <StatusBar style="light" backgroundColor="rgba(0, 0, 0, 0.6)" />
-      </SafeAreaView>
+                <Tab.Screen
+                  name="Map"
+                  component={Map}
+                  options={{
+                    tabBarLabel: "Map",
+                    tabBarIcon: ({ focused }) => {
+                      return (
+                        <Ionicons
+                          name={focused ? "map" : "map-outline"}
+                          size={30}
+                          color={focused ? "tomato" : "gray"}
+                        />
+                      );
+                    },
+                  }}
+                >
+                  {/* {(props) => <Map {...props} vehicle={user?.vehicle} />} */}
+                </Tab.Screen>
+              </Tab.Navigator>
+            </View>
+          </NavigationContainer>
+          <StatusBar style="light" backgroundColor="rgba(0, 0, 0, 0.6)" />
+        </SafeAreaView>
+      </ToastProvider>
     );
   } else if (user?.type == "Shovel" || user?.type == "Dumper") {
     console.log(user);
     return (
-      <SafeAreaView>
-        <NavigationContainer>
-          <View style={tw`w-full h-full flex flex-col`}>
-            {/* <View style={tw`h-90%`}> */}
-            <Tab.Navigator
-              screenOptions={{
-                tabBarActiveTintColor: "tomato",
-                tabBarInactiveTintColor: "gray",
-                tabBarLabelStyle: { fontSize: 15, paddingBottom: 6 },
-                tabBarStyle: {
-                  height: 70,
-                  position: "fixed",
-                  bottom: 0,
-                },
-              }}
-              initialRouteName="Dashboard"
-            >
-              <Tab.Screen
-                name="Dashboard"
-                // component={ShovelDashboard}
-                options={{
-                  headerRight: () => (
-                    <View style={styles.but2}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          return Alert.alert(
-                            "Are your sure?",
-                            "Are you sure you want Logout?",
-                            [
-                              // The "Yes" button
-                              {
-                                text: "Yes",
-                                onPress: () => {
-                                  signout();
-                                },
-                              },
-                              // The "No" button
-                              // Does nothing but dismiss the dialog when tapped
-                              {
-                                text: "No",
-                              },
-                            ]
-                          );
-                        }}
-                      >
-                        <Text style={tailwind`text-center text-white`}>
-                          Logout
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  ),
-                  tabBarLabel: "Dashboard",
-                  tabBarIcon: ({ focused }) => {
-                    return (
-                      <Ionicons
-                        name={focused ? "home" : "home-outline"}
-                        size={30}
-                        color={focused ? "tomato" : "gray"}
-                      />
-                    );
+      <ToastProvider>
+        <SafeAreaView>
+          <NavigationContainer>
+            <View style={tw`w-full h-full flex flex-col`}>
+              {/* <View style={tw`h-90%`}> */}
+              <Tab.Navigator
+                screenOptions={{
+                  tabBarActiveTintColor: "tomato",
+                  tabBarInactiveTintColor: "gray",
+                  tabBarLabelStyle: { fontSize: 15, paddingBottom: 6 },
+                  tabBarStyle: {
+                    height: 70,
+                    position: "fixed",
+                    bottom: 0,
                   },
                 }}
+                initialRouteName="Dashboard"
               >
-                {user?.type == "Shovel"
-                  ? (props) => (
-                      <ShovelDashboard
-                        {...props}
-                        userDetails={user}
-                        logout={signout}
-                      />
-                    )
-                  : (props) => (
-                      <DumperDashboard
-                        {...props}
-                        userDetails={user}
-                        logout={signout}
-                      />
-                    )}
-              </Tab.Screen>
-              <Tab.Screen
-                name="Map"
-                component={Map}
-                options={{
-                  tabBarLabel: "Map",
-                  tabBarIcon: ({ focused }) => {
-                    return (
-                      <Ionicons
-                        name={focused ? "map" : "map-outline"}
-                        size={30}
-                        color={focused ? "tomato" : "gray"}
-                      />
-                    );
-                  },
-                }}
-              >
-                {/* {(props) => <Map {...props} vehicle={user?.vehicle} />} */}
-              </Tab.Screen>
-            </Tab.Navigator>
-          </View>
-        </NavigationContainer>
-        <StatusBar style="light" backgroundColor="rgba(0, 0, 0, 0.6)" />
-      </SafeAreaView>
+                <Tab.Screen
+                  name="Dashboard"
+                  // component={ShovelDashboard}
+                  options={{
+                    headerRight: () => <Logout logout={signout} />,
+                    tabBarLabel: "Dashboard",
+                    tabBarIcon: ({ focused }) => {
+                      return (
+                        <Ionicons
+                          name={focused ? "home" : "home-outline"}
+                          size={30}
+                          color={focused ? "tomato" : "gray"}
+                        />
+                      );
+                    },
+                  }}
+                >
+                  {user?.type == "Shovel"
+                    ? (props) => (
+                        <ShovelDashboard
+                          {...props}
+                          userDetails={user}
+                          logout={signout}
+                        />
+                      )
+                    : (props) => (
+                        <DumperDashboard
+                          {...props}
+                          userDetails={user}
+                          logout={signout}
+                        />
+                      )}
+                </Tab.Screen>
+                <Tab.Screen
+                  name="Map"
+                  component={Map}
+                  options={{
+                    tabBarLabel: "Map",
+                    tabBarIcon: ({ focused }) => {
+                      return (
+                        <Ionicons
+                          name={focused ? "map" : "map-outline"}
+                          size={30}
+                          color={focused ? "tomato" : "gray"}
+                        />
+                      );
+                    },
+                  }}
+                >
+                  {/* {(props) => <Map {...props} vehicle={user?.vehicle} />} */}
+                </Tab.Screen>
+              </Tab.Navigator>
+            </View>
+          </NavigationContainer>
+          <StatusBar style="light" backgroundColor="rgba(0, 0, 0, 0.6)" />
+        </SafeAreaView>
+      </ToastProvider>
     );
   }
   console.log("null");
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen name="Login">
-            {(props) => <Login {...props} user={setUser} />}
-          </Stack.Screen>
-          <Stack.Screen name="Admin_Login">
-            {(props) => <Admin_Login {...props} user={setUser} />}
-          </Stack.Screen>
-        </Stack.Navigator>
-      </NavigationContainer>
-      <StatusBar style="light" backgroundColor="rgba(0, 0, 0, 0.6)" />
-    </SafeAreaView>
+    <ToastProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen name="Login">
+              {(props) => <Login {...props} user={setUser} />}
+            </Stack.Screen>
+            <Stack.Screen name="Admin_Login">
+              {(props) => <Admin_Login {...props} user={setUser} />}
+            </Stack.Screen>
+          </Stack.Navigator>
+        </NavigationContainer>
+        <StatusBar style="light" backgroundColor="rgba(0, 0, 0, 0.6)" />
+      </SafeAreaView>
+    </ToastProvider>
   );
 }
 

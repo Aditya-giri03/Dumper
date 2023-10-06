@@ -34,7 +34,7 @@ const Admin_Login = (props) => {
     <SafeAreaView style={{ flex: 1 }}>
       {/* <ScsrollView> */}
       <View style={tw`flex-1 flex-col bg-white items-center  relative`}>
-        <View>
+        <View style={tw`items-center`}>
           <View style={tw`flex items-center h-60 w-80 p-2`}>
             <Image
               style={tw`w-full h-full `}
